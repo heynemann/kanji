@@ -22,9 +22,8 @@ via npm:
     var kanji = require('kanji');
 
     // Render a string
-    kanji.render('string of kanji', {
-        debug: true
-    });
+    kanji.render('string of kanji');
+    // Returns "string of kanji"
 
 ### Options
 
