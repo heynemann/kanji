@@ -1,0 +1,9 @@
+{
+  "name": "kanji",
+  "description": "kanji template engine",
+  "version": "0.0.1",
+  "author": "Bernardo Heynemann <heynemann@gmail.com>",
+  "main": "./index.js",
+  "bin": { "kanji": "./bin/kanji" },
+  "engines": { "node": ">= 0.4.0" }
+}
