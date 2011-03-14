@@ -25,12 +25,66 @@ vows.describe('lexer module').addBatch({
                 return lex.next();
             },
 
-            'should return a token of type TEXT': function(topic) {
+            'should return a token of type Text': function(topic) {
                 assert.isObject(topic);
-                assert.equal(topic.type, 'TEXT');
+                assert.equal(topic.type, 'Text');
                 assert.equal(topic.val, 'simple string');
             }
         },
+
+        'when lexing an empty string': {
+
+            topic: function() {
+                var lex = new Lexer('');
+                return lex.next();
+            },
+
+            'should return an object': function(topic) {
+                assert.isObject(topic);
+            },
+
+            'should return an Eos token': function(topic) {
+                assert.equal(topic.type, 'Eos');
+            }
+        },
+
+        'when lexing a multi-line string': {
+
+            topic: function() {
+                var lex = new Lexer('some\ntext');
+                return lex;
+            },
+
+            'should return the proper tokens': function(lex) {
+                var item = lex.next();
+                assert.equal(item.type, 'Text');
+                item = lex.next();
+                assert.equal(item.type, 'Newline');
+                item = lex.next();
+                assert.equal(item.type, 'Text');
+                item = lex.next();
+                assert.equal(item.type, 'Eos');
+            }
+        },
+
+
+        'when lexing a string with variable replacement': {
+
+            topic: function() {
+                var lex = new Lexer('{{ world }}');
+
+                return lex.next();
+            },
+
+            'should return a token': function(topic) {
+                assert.isObject(topic);
+            },
+
+            'and it should be of type Variable': function(topic) {
+                assert.equal(topic.type, 'Variable');
+            }
+
+        }
 
     }
 }).export(module);

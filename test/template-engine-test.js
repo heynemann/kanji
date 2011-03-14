@@ -30,6 +30,16 @@ vows.describe('kanji module').addBatch({
             }
         },
 
+        'module rendering multi-line strings': {
+            topic: function() {
+                return kanji.render('some basic\nkanjo string');
+            },
+
+            'should return the multi-line string': function(topic) {
+                assert.strictEqual(topic, 'some basic\nkanjo string');
+            }
+        },
+
         'module with simple variable replacement': {
             topic: function() {
                 return kanji.render('Hello {{ world }}', {
@@ -40,9 +50,9 @@ vows.describe('kanji module').addBatch({
             'should not return null': function(topic) {
                 assert.isNotNull(topic);
             },
-            //'should return the replaced value': function(topic) {
-                //assert.strictEqual(topic, 'Hello World');
-            //}
+            'should return the replaced value': function(topic) {
+                assert.strictEqual(topic, 'Hello World');
+            }
  
         }
     }

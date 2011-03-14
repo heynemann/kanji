@@ -19,11 +19,14 @@ var Node = require('./node');
  */
 
 var Text = module.exports = function Text(line) {
-  if ('string' == typeof line) this.push(line);
+    if ('string' == typeof line) this.push(line);
 };
 
 /**
  * Inherit from `Node`.
  */
 
-T
+Text.prototype.__proto__ = Node.prototype;
+Text.prototype.render = function(context) {
+    return this.join('\n');
+};
