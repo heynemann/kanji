@@ -54,6 +54,44 @@ vows.describe('kanji module').addBatch({
                 assert.strictEqual(topic, 'Hello World');
             }
  
+        },
+
+        'module with advanced variable replacement': {
+            'in one level': {
+                topic: function() {
+                    return kanji.render('Hello {{ world.name }}', {
+                        world: {
+                            name: 'Bernardo'
+                        }
+                    });
+                },
+
+                'should return the replaced value': function(topic) {
+                    assert.strictEqual(topic, 'Hello Bernardo');
+                }
+            },
+
+            'in many levels': {
+                topic: function() {
+                    var data = {
+                        world: {
+                            citizen: {
+                                name: {
+                                    first: 'John',
+                                    last: 'Doe'
+                                }
+                            }
+                        }
+                    };
+
+                    return kanji.render('Hello {{ world.citizen.name.first}} {{world.citizen.name.last }}', data);
+                },
+
+                'should return the replaced value': function(topic) {
+                    assert.strictEqual(topic, 'Hello John Doe');
+                }
+            }
         }
+
     }
 }).export(module);
