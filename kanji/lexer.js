@@ -10,4 +10,16 @@ var Lexer = module.exports = function Lexer(str) {
 
 Lexer.prototype = {
 
+    tok: function(type, val, lineno) {
+        return {
+            type: type,
+            val: val,
+            lineno: lineno
+        };
+    },
+
+    next: function() {
+        return this.tok('TEXT', this.input, this.lineno);
+    }
+
 }
