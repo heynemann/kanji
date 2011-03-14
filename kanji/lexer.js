@@ -39,7 +39,9 @@ Lexer.prototype = {
     },
 
     next: function() {
-        var token = this.variable ||
+        var token = 
+            this.comment ||
+            this.variable ||
             this.newline ||
             this.eos ||
             this.text;
@@ -49,6 +51,15 @@ Lexer.prototype = {
         }
 
         return token;
+    },
+
+    get comment() {
+        var captures;
+        if (captures = /^\{\#(.+?)\#\}/.exec(this.input)) {
+            this.consume(captures[0].length);
+            var tok = this.tok('Comment', captures[1], this.lineno);
+            return tok;
+        }
     },
 
     get variable() {
@@ -61,7 +72,7 @@ Lexer.prototype = {
     },
 
     get text() {
-        var re = /^(.+?)(?=(?:\{\{|\{\%|\n|$))/m;
+        var re = /^(.+?)(?=(?:\{\{|\{\%|\{\#|\n|$))/m;
         var captures;
         if (captures = re.exec(this.input)) {
             this.consume(captures[0].length);

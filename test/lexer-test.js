@@ -84,6 +84,24 @@ vows.describe('lexer module').addBatch({
                 assert.equal(topic.type, 'Variable');
             }
 
+        },
+
+        'when lexing a string with comments': {
+
+            topic: function() {
+                var lex = new Lexer('{# {{ world }} #}');
+
+                return lex.next();
+            },
+
+            'should return a token': function(topic) {
+                assert.isObject(topic);
+            },
+
+            'and it should be of type Comment': function(topic) {
+                assert.equal(topic.type, 'Comment');
+            }
+
         }
 
     }

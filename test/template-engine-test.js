@@ -122,7 +122,6 @@ vows.describe('kanji module').addBatch({
 
             },
 
-
             'with array index': {
                 topic: function() {
                     return kanji.render('Hello {{ world.people[1].name }}', {
@@ -139,7 +138,23 @@ vows.describe('kanji module').addBatch({
                 'should return Hello John': function(topic) {
                     assert.equal(topic, 'Hello John');
                 }
+            },
+
+            'with commented text': {
+                topic: function() {
+                    return kanji.render('Hello {# {{ world["name"] }}#}', {
+                        world: {
+                            name: "Bernardo"
+                        }
+                    });
+                },
+
+                'should return the proper value': function(topic) {
+                    assert.equal(topic, 'Hello ');
+                }
+
             }
+
         }
 
     }

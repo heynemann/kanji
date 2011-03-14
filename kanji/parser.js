@@ -24,7 +24,10 @@ Parser.prototype = {
         block.lineno = this.lineno;
 
         while (this.peek.type !== 'Eos') {
-            block.push(this.parseExpr());
+            var element = this.parseExpr();
+            if (element != null) {
+                block.push(element);
+            }
         }
 
         return block;
@@ -44,6 +47,10 @@ Parser.prototype = {
         newlineNode.lineno = this.lineno;
 
         return newlineNode;
+    },
+
+    parseComment: function(node) {
+        return null;
     },
 
     parseVariable: function(node) {
