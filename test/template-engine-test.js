@@ -40,9 +40,9 @@ vows.describe('kanji module').addBatch({
             'should not return null': function(topic) {
                 assert.isNotNull(topic);
             },
-            'should return the replaced value': function(topic) {
-                assert.strictEqual(topic, 'Hello World');
-            }
+            //'should return the replaced value': function(topic) {
+                //assert.strictEqual(topic, 'Hello World');
+            //}
  
         }
     }
