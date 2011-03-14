@@ -92,6 +92,37 @@ vows.describe('kanji module').addBatch({
                 }
             },
 
+            'with property indexer': {
+                topic: function() {
+                    return kanji.render("Hello {{ world['name'] }}", {
+                        world: {
+                            name: "Bernardo"
+                        }
+                    });
+                },
+
+                'should return the replaced value': function(topic) {
+                    assert.equal(topic, 'Hello Bernardo');
+                }
+
+            },
+
+            'with property indexer in double quotes': {
+                topic: function() {
+                    return kanji.render('Hello {{ world["name"] }}', {
+                        world: {
+                            name: "Bernardo"
+                        }
+                    });
+                },
+
+                'should return the replaced value': function(topic) {
+                    assert.equal(topic, 'Hello Bernardo');
+                }
+
+            },
+
+
             'with array index': {
                 topic: function() {
                     return kanji.render('Hello {{ world.people[1].name }}', {
