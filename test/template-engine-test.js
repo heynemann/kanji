@@ -90,6 +90,24 @@ vows.describe('kanji module').addBatch({
                 'should return the replaced value': function(topic) {
                     assert.strictEqual(topic, 'Hello John Doe');
                 }
+            },
+
+            'with array index': {
+                topic: function() {
+                    return kanji.render('Hello {{ world.people[1].name }}', {
+                        world: {
+                            people: [
+                                { name: 'Bernardo' },
+                                { name: 'John' }
+                            ]
+                        }
+                    });
+
+                },
+
+                'should return Hello John': function(topic) {
+                    assert.equal(topic, 'Hello John');
+                }
             }
         }
 

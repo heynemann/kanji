@@ -21,6 +21,23 @@ Variable.prototype.render = function(context) {
         var initial = context[values[0]];
 
         value = values.slice(1).reduce(function(reduced, next) {
+            if (reduced == null) {
+                return null;
+            }
+
+            var captures;
+            if (captures = /(.+?)\[(\d+)\]/.exec(next)) {
+                var nextName = captures[1];
+                var index = parseInt(captures[2], 10);
+
+                var nextReduced = reduced[nextName];
+                if (nextReduced == null){
+                    return null;
+                }
+
+                return reduced[nextName][index];
+            }
+
             return reduced[next];
         }, initial);
     }
