@@ -42,7 +42,8 @@ Lexer.prototype = {
         var token = 
             this.comment ||
             this.variable ||
-            this.ifcapture ||
+            this.ifCapture ||
+            this.forCapture ||
             this.newline ||
             this.eos ||
             this.text;
@@ -54,7 +55,29 @@ Lexer.prototype = {
         return token;
     },
 
-    get ifcapture() {
+    get forCapture() {
+        var captures;
+
+        var forRegex = /^\{\%\s*for\s*(.+?)\s+in\s+(.+?)\s*\%\}/;
+        var endForRegex = /\{\%\s*endfor\s*\%\}/;
+        var endForRegex = /^\{\%\s*endfor\s*\%\}/;
+
+        if (captures = forRegex.exec(this.input)) {
+            this.consume(captures[0].length);
+
+            var tok = {
+                type: 'For', 
+                element: captures[1],
+                collection: captures[2],
+                lineno: this.lineno
+            };
+
+            return tok;
+        }
+
+    },
+
+    get ifCapture() {
         var captures;
         var endifRegex = /\{\%\s*endif\s*\%\}/;
         var imminentEndIf = /^\{\%\s*endif\s*\%\}/;

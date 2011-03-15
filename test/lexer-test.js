@@ -175,7 +175,35 @@ vows.describe('lexer module').addBatch({
                 assert.length(topic.elseBlocks, 1);
             }
 
+        },
+
+        'when lexing for statements': {
+
+            topic: function() {
+                var lex = new Lexer('{% for element in items %}do{% endfor %}');
+
+                return lex.next();
+            },
+
+            'should return a token': function(topic) {
+                assert.isObject(topic);
+            },
+
+            'and it should be of type for': function(topic) {
+                assert.equal(topic.type, 'For');
+            },
+
+            'and it should have the element name': function(topic) {
+                assert.equal(topic.element, 'element');
+            },
+
+            'and it should have the collection name': function(topic) {
+                assert.equal(topic.collection, 'items');
+            },
+
         }
+
+
 
     }
 }).export(module);
