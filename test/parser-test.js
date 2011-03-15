@@ -96,7 +96,28 @@ vows.describe('parser module').addBatch({
             'should return a VariableNode as block content': function(topic) {
                 assert.instanceOf(topic[0].block[0], nodes.Variable);
             }
-        }
+        },
+
+        'when parsing a raw text': {
+            topic: function() {
+                var parser = new Parser('{% raw %}{{variable}}{%endraw%}');
+                return parser.parse();
+            },
+
+            'should have as result a block': function(topic) {
+                assert.instanceOf(topic, nodes.Block);
+            },
+
+            'should return a node of type Raw': function(topic) {
+                assert.instanceOf(topic[0], nodes.Raw);
+            },
+
+            'should return a filled RawNode': function(topic) {
+                assert.equal(topic[0].text, '{{variable}}');
+            }
+        },
+
+
     }
 }).export(module);
 

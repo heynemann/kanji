@@ -41,6 +41,7 @@ Lexer.prototype = {
     next: function() {
         var token = 
             this.comment ||
+            this.raw ||
             this.variable ||
             this.ifCapture ||
             this.forCapture ||
@@ -138,6 +139,15 @@ Lexer.prototype = {
         if (captures = /^\{\#(.+?)\#\}/.exec(this.input)) {
             this.consume(captures[0].length);
             var tok = this.tok('Comment', captures[1], this.lineno);
+            return tok;
+        }
+    },
+
+    get raw() {
+        var captures;
+        if (captures = /^\{\%\s*raw\s*\%\}(.+?)\{\%\s*endraw\s*\%\}/.exec(this.input)) {
+            this.consume(captures[0].length);
+            var tok = this.tok('Raw', captures[1], this.lineno);
             return tok;
         }
     },

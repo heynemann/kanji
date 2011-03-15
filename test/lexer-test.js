@@ -210,9 +210,27 @@ vows.describe('lexer module').addBatch({
 
             }
 
+        },
+
+        'when lexing raw statements': {
+            topic: function() {
+                var lex = new Lexer('{% raw %}text {% if true %}{{ item }}{% endif %}{% endraw %}');
+                return lex.next();
+            },
+
+            'should return a token': function(topic) {
+                assert.isObject(topic);
+            },
+
+            'and it should be of type raw': function(topic) {
+                assert.equal(topic.type, 'Raw');
+            },
+
+            'and it should lex the text as val': function(topic) {
+                assert.equal(topic.val, 'text {% if true %}{{ item }}{% endif %}');
+            },
+
         }
-
-
 
     }
 }).export(module);

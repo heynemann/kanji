@@ -118,6 +118,13 @@ Parser.prototype = {
         textNode.lineno = this.lineno;
 
         return textNode;
+    },
+
+    parseRaw: function(node) {
+        var rawNode = new nodes.Raw(node.val);
+        rawNode.lineno = this.lineno;
+
+        return rawNode;
     }
 
 };

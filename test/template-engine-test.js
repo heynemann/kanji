@@ -227,7 +227,19 @@ vows.describe('kanji module').addBatch({
                 }
             },
 
+        },
+
+        'module with RAW statement': {
+            topic: function() {
+                return kanji.render('Hello {% raw %}{% for element in elements %}{{ element }}{% endfor %}{% if true %}rawtest{%endif%}{% endraw %}!');
+            },
+
+            'should return Hello man!': function(topic) {
+                assert.equal(topic, 'Hello {% for element in elements %}{{ element }}{% endfor %}{% if true %}rawtest{%endif%}!');
+            }
+
         }
+
 
     }
 }).export(module);
