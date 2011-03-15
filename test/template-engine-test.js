@@ -168,6 +168,19 @@ vows.describe('kanji module').addBatch({
                 'should return Hello man!': function(topic) {
                     assert.equal(topic, 'Hello man!');
                 }
+            },
+
+            'test if-else': {
+                topic: function() {
+                    return kanji.render('Hello {% if sex == "M" %}man{%else %}girl{%endif%}!', {
+                        sex: "F"
+                    });
+                },
+
+                'should return Hello girl!': function(topic) {
+                    assert.equal(topic, 'Hello girl!');
+                }
+
             }
 
         }

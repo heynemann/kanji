@@ -128,6 +128,25 @@ vows.describe('lexer module').addBatch({
                 assert.equal(topic.blocks[0].type, "Text");
             }
 
+        },
+
+        'when lexing else statements': {
+            topic: function() {
+                var lex = new Lexer('{% if false %}do{% else %}not{% endif %}');
+
+                return lex.next();
+            },
+
+            'it should have an else block': function(topic) {
+                assert.isArray(topic.elseBlocks);
+                assert.length(topic.elseBlocks, 1);
+            },
+
+            'and it should have a block of type text as else': function(topic) {
+                assert.equal(topic.elseBlocks[0].type, "Text");
+                assert.equal(topic.elseBlocks[0].val, "not");
+            }
+           
         }
 
     }

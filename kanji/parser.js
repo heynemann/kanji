@@ -53,18 +53,28 @@ Parser.prototype = {
         return null;
     },
 
-    parseIf: function(node) {
-        var blocks = new nodes.Block();
-
-        for (var blockIndex=0;
-                 blockIndex < node.blocks.length;
-                 blockIndex++) {
-            var blockNode = node.blocks[blockIndex];
-            var parsedNode = this.parseExpr(blockNode);
-            blocks.push(parsedNode);
+    __parseIfBlock: function(node, blocks) {
+        var block = new nodes.Block();
+        if (!blocks || blocks.length == 0) {
+            return block;
         }
 
-        var ifNode = new nodes.If(node.val, blocks);
+        for (var blockIndex=0;
+                 blockIndex < blocks.length;
+                 blockIndex++) {
+            var blockNode = blocks[blockIndex];
+            var parsedNode = this.parseExpr(blockNode);
+            block.push(parsedNode);
+        }
+
+        return block;
+    },
+
+    parseIf: function(node) {
+        var blocks = this.__parseIfBlock(node, node.blocks);
+        var elseBlocks = this.__parseIfBlock(node, node.elseBlocks);
+
+        var ifNode = new nodes.If(node.val, blocks, elseBlocks);
         ifNode.lineno = this.lineno;
 
         return ifNode;

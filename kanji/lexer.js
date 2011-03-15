@@ -58,6 +58,7 @@ Lexer.prototype = {
         var captures;
         var endifRegex = /\{\%\s*endif\s*\%\}/;
         var imminentEndIf = /^\{\%\s*endif\s*\%\}/;
+        var imminentElse = /^\{\%\s*else\s*\%\}/;
 
         if (captures = /^\{\%\s*if\s*(.+?)\s*\%\}/.exec(this.input)) {
             this.consume(captures[0].length);
@@ -69,8 +70,16 @@ Lexer.prototype = {
             var tok = this.tok('If', captures[1], this.lineno);
             tok.blocks = [];
 
+            var blocks = tok.blocks;
+
             while (! (captures = imminentEndIf.exec(this.input))) {
-                tok.blocks.push(this.next());
+                var elseCapture;
+                if (elseCapture = imminentElse.exec(this.input)) {
+                    this.consume(elseCapture[0].length);
+                    tok.elseBlocks = [];
+                    blocks = tok.elseBlocks;
+                }
+                blocks.push(this.next());
             }
             this.consume(captures[0].length);
 
