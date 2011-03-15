@@ -9,7 +9,7 @@ The code design and structure is heavily influenced by the amazing
 
 ## Features
 
-  - Template parsing;
+  - Template rendering;
 
 ## Installation
 
@@ -25,13 +25,28 @@ via npm:
     kanji.render('string of kanji');
     // Returns "string of kanji"
 
-### Options
+    // Render a variable
+    kanji.render('Hello {{ name }}', { name: 'Bernardo' });
+    // Returns "Hello Bernardo"
 
- - `debug`     Outputs tokens and function body generated
+    // Render a string with if statement
+    kanji.render('Very{% if something.else %} nice{% endif %}!',
+                 { something: { else: true } }); 
+    // Returns "Very nice!", would return Very! if else was false
+
+    // Render a string with a for statement
+    kanji.render('{% for item in list %}{{ item }} - {% endfor %}',
+                 { list: ['a', 'b', 'c', 'd']});
+    // Returns "a - b - c - d - "
 
 ## Syntax
 
-TBW.
+Right now we are in the process of implementing the same features of Jinja2.
+
+You can check the list of supported features in the jinja2
+[template page](http://jinja.pocoo.org/docs/templates). Some of the features
+will be adapted because of the differences between node.js and python. 
+Where adaptations occur, the docs will make notice.
 
 ## License 
 
