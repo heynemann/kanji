@@ -181,7 +181,36 @@ vows.describe('kanji module').addBatch({
                     assert.equal(topic, 'Hello girl!');
                 }
 
+            },
+
+            'test simple elif': {
+                topic: function() {
+                    return kanji.render('Hello {% if sex == "F" %}girl{% elif age > 50 && sex == "M" %}old man{%else %}man{%endif%}!', {
+                        sex: "M",
+                        age: 60
+                    });
+                },
+
+                'should return Hello old man!': function(topic) {
+                    assert.equal(topic, 'Hello old man!');
+                }
+
+            },
+
+            'test advanced elif': {
+                topic: function() {
+                    return kanji.render('Hello {% if sex == "F" %}girl{% elif age > 30 && age < 60 && sex == "M" %}new man{% elif age >= 60 && sex =="M" %}old man{%else %}man{%endif%}!', {
+                        sex: "M",
+                        age: 60
+                    });
+                },
+
+                'should return Hello old man!': function(topic) {
+                    assert.equal(topic, 'Hello old man!');
+                }
+
             }
+
 
         }
 

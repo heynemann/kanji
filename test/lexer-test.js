@@ -147,6 +147,34 @@ vows.describe('lexer module').addBatch({
                 assert.equal(topic.elseBlocks[0].val, "not");
             }
            
+        },
+
+        'when lexing elif statements': {
+
+            topic: function() {
+                var lex = new Lexer('{% if false %}do{% elif true %}elif{%else%}else{% endif %}');
+
+                return lex.next();
+            },
+
+            'it should have an elif block': function(topic) {
+                assert.isArray(topic.elifBlocks);
+                assert.length(topic.elifBlocks, 1);
+            },
+
+            'with the proper condition': function(topic) {
+                assert.equal(topic.elifBlocks[0].condition, 'true');
+            },
+
+            'and a text element in the blocks section': function(topic) {
+                assert.equal(topic.elifBlocks[0].blocks[0].type, 'Text');
+            },
+
+            'and keep its else block': function(topic) {
+                assert.isArray(topic.elseBlocks);
+                assert.length(topic.elseBlocks, 1);
+            }
+
         }
 
     }

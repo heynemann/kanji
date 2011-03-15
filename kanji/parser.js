@@ -70,11 +70,29 @@ Parser.prototype = {
         return block;
     },
 
+    __parseElifBlock: function(node) {
+        if (!node.elifBlocks || node.elifBlocks.length == 0) {
+            return null;
+        }
+        var blocks = [];
+
+        for (var index=0; index<node.elifBlocks.length; index++) {
+            var elif = node.elifBlocks[index];
+            blocks.push({
+                condition: elif.condition,
+                block: this.__parseIfBlock(node, elif.blocks)
+            });
+        }
+
+        return blocks;
+    },
+
     parseIf: function(node) {
         var blocks = this.__parseIfBlock(node, node.blocks);
+        var elifBlocks = this.__parseElifBlock(node);
         var elseBlocks = this.__parseIfBlock(node, node.elseBlocks);
 
-        var ifNode = new nodes.If(node.val, blocks, elseBlocks);
+        var ifNode = new nodes.If(node.val, blocks, elifBlocks, elseBlocks);
         ifNode.lineno = this.lineno;
 
         return ifNode;
