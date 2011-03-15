@@ -234,7 +234,7 @@ vows.describe('kanji module').addBatch({
                     });
                 },
 
-                'should return Hello man!': function(topic) {
+                'should return Hello a!': function(topic) {
                     assert.equal(topic, 'Hello a!');
                 }
 
