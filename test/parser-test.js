@@ -45,6 +45,17 @@ vows.describe('parser module').addBatch({
             'should return a filled TextNode': function(topic) {
                 assert.equal(topic[0][0], 'simple string');
             }
+        },
+
+        'when parsing a string with an if clause': {
+            topic: function() {
+                var parser = new Parser('{% if something %}simple{% endif %}');
+                return parser.parse();
+            },
+            
+            'should return an IfNode': function(topic) {
+                assert.instanceOf(topic[0], nodes.If);
+            }
         }
 
     }

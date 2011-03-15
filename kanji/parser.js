@@ -53,6 +53,13 @@ Parser.prototype = {
         return null;
     },
 
+    parseIf: function(node) {
+        var ifNode = new nodes.If(node.val, node.blocks);
+        ifNode.lineno = this.lineno;
+
+        return ifNode;
+    },
+
     parseVariable: function(node) {
         var variableNode = new nodes.Variable(node.val);
         variableNode.lineno = this.lineno;

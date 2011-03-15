@@ -119,6 +119,10 @@ vows.describe('lexer module').addBatch({
                 assert.equal(topic.type, 'If');
             },
 
+            'and it should have the condition as value': function(topic) {
+                assert.equal(topic.val, 'true');
+            },
+
             'and it should have a block of type text': function(topic) {
                 assert.length(topic.blocks, 1);
                 assert.equal(topic.blocks[0].type, "Text");
