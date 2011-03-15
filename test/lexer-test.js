@@ -102,6 +102,28 @@ vows.describe('lexer module').addBatch({
                 assert.equal(topic.type, 'Comment');
             }
 
+        },
+
+        'when lexing a string with if statement': {
+            topic: function() {
+                var lex = new Lexer('{% if true %}do{% endif %}');
+
+                return lex.next();
+            },
+
+            'should return a token': function(topic) {
+                assert.isObject(topic);
+            },
+
+            'and it should be of type if': function(topic) {
+                assert.equal(topic.type, 'If');
+            },
+
+            'and it should have a block of type text': function(topic) {
+                assert.length(topic.blocks, 1);
+                assert.equal(topic.blocks[0].type, "Text");
+            }
+
         }
 
     }

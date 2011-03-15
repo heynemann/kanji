@@ -139,20 +139,35 @@ vows.describe('kanji module').addBatch({
                     assert.equal(topic, 'Hello John');
                 }
             },
+        },
 
-            'with commented text': {
+        'module with commented text': {
+            topic: function() {
+                return kanji.render('Hello {# {{ world["name"] }}#}', {
+                    world: {
+                        name: "Bernardo"
+                    }
+                });
+            },
+
+            'should return the proper value': function(topic) {
+                assert.equal(topic, 'Hello ');
+            }
+
+        },
+
+        'module with IF statement': {
+
+            'test if only': {
                 topic: function() {
-                    return kanji.render('Hello {# {{ world["name"] }}#}', {
-                        world: {
-                            name: "Bernardo"
-                        }
+                    return kanji.render('Hello {% if (sex=="M") %}man{%endif%}!', {
+                        sex: "M"
                     });
                 },
 
-                'should return the proper value': function(topic) {
-                    assert.equal(topic, 'Hello ');
+                'should return Hello man!': function(topic) {
+                    assert.equal(topic, 'Hello man!');
                 }
-
             }
 
         }

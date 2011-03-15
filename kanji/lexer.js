@@ -42,6 +42,7 @@ Lexer.prototype = {
         var token = 
             this.comment ||
             this.variable ||
+            this.ifcapture ||
             this.newline ||
             this.eos ||
             this.text;
@@ -51,6 +52,30 @@ Lexer.prototype = {
         }
 
         return token;
+    },
+
+    get ifcapture() {
+        var captures;
+        var endifRegex = /\{\%\s*endif\s*\%\}/;
+        var imminentEndIf = /^\{\%\s*endif\s*\%\}/;
+
+        if (captures = /^\{\%\s*if\s*(.+?)\s*\%\}/.exec(this.input)) {
+            this.consume(captures[0].length);
+
+            if (!endifRegex.exec(this.input)) {
+                throw Error("Can't find endif for if statement in line no." + this.lineno);
+            }
+
+            var tok = this.tok('If', captures[1], this.lineno);
+            tok.blocks = [];
+
+            while (! (captures = imminentEndIf.exec(this.input))) {
+                tok.blocks.push(this.next());
+            }
+            this.consume(captures[0].length);
+
+            return tok
+        }
     },
 
     get comment() {
