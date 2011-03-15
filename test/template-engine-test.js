@@ -160,7 +160,7 @@ vows.describe('kanji module').addBatch({
 
             'test if only': {
                 topic: function() {
-                    return kanji.render('Hello {% if (sex=="M") %}man{%endif%}!', {
+                    return kanji.render('Hello {% if sex == "M" %}man{%endif%}!', {
                         sex: "M"
                     });
                 },

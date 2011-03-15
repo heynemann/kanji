@@ -7,7 +7,7 @@ var Parser = mod = module.exports = function Parser(str){
 };
 
 Parser.prototype = {
-    get line() {
+    get lineno() {
         return this.lexer.lineno
     },
 
@@ -33,13 +33,13 @@ Parser.prototype = {
         return block;
     },
 
-    parseExpr: function() {
-        var node = this.advance();
+    parseExpr: function(node) {
+        var node = node || this.advance();
 
         var methodName = 'parse' + node.type;
         var parseMethod = this[methodName];
 
-        return parseMethod(node);
+        return parseMethod.call(this, node);
     },
 
     parseNewline: function(node) {
@@ -54,7 +54,17 @@ Parser.prototype = {
     },
 
     parseIf: function(node) {
-        var ifNode = new nodes.If(node.val, node.blocks);
+        var blocks = new nodes.Block();
+
+        for (var blockIndex=0;
+                 blockIndex < node.blocks.length;
+                 blockIndex++) {
+            var blockNode = node.blocks[blockIndex];
+            var parsedNode = this.parseExpr(blockNode);
+            blocks.push(parsedNode);
+        }
+
+        var ifNode = new nodes.If(node.val, blocks);
         ifNode.lineno = this.lineno;
 
         return ifNode;
