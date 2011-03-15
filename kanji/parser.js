@@ -53,7 +53,7 @@ Parser.prototype = {
         return null;
     },
 
-    __parseIfBlock: function(node, blocks) {
+    __parseBlock: function(node, blocks) {
         var block = new nodes.Block();
         if (!blocks || blocks.length == 0) {
             return block;
@@ -80,7 +80,7 @@ Parser.prototype = {
             var elif = node.elifBlocks[index];
             blocks.push({
                 condition: elif.condition,
-                block: this.__parseIfBlock(node, elif.blocks)
+                block: this.__parseBlock(node, elif.blocks)
             });
         }
 
@@ -88,14 +88,22 @@ Parser.prototype = {
     },
 
     parseIf: function(node) {
-        var blocks = this.__parseIfBlock(node, node.blocks);
+        var blocks = this.__parseBlock(node, node.blocks);
         var elifBlocks = this.__parseElifBlock(node);
-        var elseBlocks = this.__parseIfBlock(node, node.elseBlocks);
+        var elseBlocks = this.__parseBlock(node, node.elseBlocks);
 
         var ifNode = new nodes.If(node.val, blocks, elifBlocks, elseBlocks);
         ifNode.lineno = this.lineno;
 
         return ifNode;
+    },
+
+    parseFor: function(node) {
+        var blocks = this.__parseBlock(node, node.blocks);
+        var forNode = new nodes.For(node.element, node.collection, blocks);
+        forNode.lineno = this.lineno;
+
+        return forNode;
     },
 
     parseVariable: function(node) {

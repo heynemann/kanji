@@ -71,8 +71,32 @@ vows.describe('parser module').addBatch({
                 assert.instanceOf(topic[0].block[0], nodes.Text);
             }
  
-        }
+        },
 
+        'when parsing a string with a for clause': {
+            topic: function() {
+                var parser = new Parser('{% for something in other %}{{ something}}{% endfor %}');
+                return parser.parse();
+            },
+            
+            'should return a ForNode': function(topic) {
+                assert.instanceOf(topic[0], nodes.For);
+            },
+
+            'should return one block': function(topic) {
+                assert.isNotNull(topic[0].block);
+                assert.notEqual(topic[0].block, undefined);
+                assert.length(topic[0].block, 1);
+            },
+
+            'should return a BlockNode as block': function(topic) {
+                assert.instanceOf(topic[0].block, nodes.Block);
+            },
+
+            'should return a VariableNode as block content': function(topic) {
+                assert.instanceOf(topic[0].block[0], nodes.Variable);
+            }
+        }
     }
 }).export(module);
 

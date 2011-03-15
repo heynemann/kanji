@@ -201,6 +201,15 @@ vows.describe('lexer module').addBatch({
                 assert.equal(topic.collection, 'items');
             },
 
+            'and it should have an array as blocks': function(topic) {
+                assert.isArray(topic.blocks);
+            },
+
+            'and it should have a text element as block': function(topic) {
+                assert.equal(topic.blocks[0].type, 'Text');
+
+            }
+
         }
 
 

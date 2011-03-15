@@ -211,6 +211,21 @@ vows.describe('kanji module').addBatch({
 
             }
 
+        },
+
+        'module with FOR statement': {
+
+            'test for only': {
+                topic: function() {
+                    return kanji.render('Hello {% for element in elements %}{{ element }}{% endfor %}!', {
+                        elements: ['a', 'b', 'c', 'd', 'e']
+                    });
+                },
+
+                'should return Hello man!': function(topic) {
+                    assert.equal(topic, 'Hello abcde!');
+                }
+            },
 
         }
 

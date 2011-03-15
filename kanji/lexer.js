@@ -60,7 +60,7 @@ Lexer.prototype = {
 
         var forRegex = /^\{\%\s*for\s*(.+?)\s+in\s+(.+?)\s*\%\}/;
         var endForRegex = /\{\%\s*endfor\s*\%\}/;
-        var endForRegex = /^\{\%\s*endfor\s*\%\}/;
+        var imminentEndForRegex = /^\{\%\s*endfor\s*\%\}/;
 
         if (captures = forRegex.exec(this.input)) {
             this.consume(captures[0].length);
@@ -69,8 +69,20 @@ Lexer.prototype = {
                 type: 'For', 
                 element: captures[1],
                 collection: captures[2],
-                lineno: this.lineno
+                lineno: this.lineno,
+                blocks: []
             };
+            var blocks = tok.blocks;
+
+            if (!endForRegex.exec(this.input)) {
+                throw Error("Can't find endfor for 'for' statement in line no." + this.lineno);
+            }
+
+            while (! (captures = imminentEndForRegex.exec(this.input))) {
+                blocks.push(this.next());
+            }
+
+            this.consume(captures[0].length);
 
             return tok;
         }
