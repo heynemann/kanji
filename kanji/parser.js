@@ -100,7 +100,7 @@ Parser.prototype = {
 
     parseFor: function(node) {
         var blocks = this.__parseBlock(node, node.blocks);
-        var forNode = new nodes.For(node.element, node.collection, blocks);
+        var forNode = new nodes.For(node.element, node.collection, blocks, node.condition);
         forNode.lineno = this.lineno;
 
         return forNode;

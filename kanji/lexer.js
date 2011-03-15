@@ -59,7 +59,7 @@ Lexer.prototype = {
     get forCapture() {
         var captures;
 
-        var forRegex = /^\{\%\s*for\s*(.+?)\s+in\s+(.+?)\s*\%\}/;
+        var forRegex = /^\{\%\s*for\s*(.+?)\s+in\s+(.+?)(?:\s*if\s*(.+?))?\s*\%\}/;
         var endForRegex = /\{\%\s*endfor\s*\%\}/;
         var imminentEndForRegex = /^\{\%\s*endfor\s*\%\}/;
 
@@ -71,7 +71,8 @@ Lexer.prototype = {
                 element: captures[1],
                 collection: captures[2],
                 lineno: this.lineno,
-                blocks: []
+                blocks: [],
+                condition: captures[3] || null
             };
             var blocks = tok.blocks;
 

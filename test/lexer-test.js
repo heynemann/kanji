@@ -179,34 +179,57 @@ vows.describe('lexer module').addBatch({
 
         'when lexing for statements': {
 
-            topic: function() {
-                var lex = new Lexer('{% for element in items %}do{% endfor %}');
+            'in simple loops': {
 
-                return lex.next();
+                topic: function() {
+                    var lex = new Lexer('{% for element in items %}do{% endfor %}');
+
+                    return lex.next();
+                },
+
+                'should return a token': function(topic) {
+                    assert.isObject(topic);
+                },
+
+                'and it should be of type for': function(topic) {
+                    assert.equal(topic.type, 'For');
+                },
+
+                'and it should have the element name': function(topic) {
+                    assert.equal(topic.element, 'element');
+                },
+
+                'and it should have the collection name': function(topic) {
+                    assert.equal(topic.collection, 'items');
+                },
+
+                'and it should have an array as blocks': function(topic) {
+                    assert.isArray(topic.blocks);
+                },
+
+                'and it should have a text element as block': function(topic) {
+                    assert.equal(topic.blocks[0].type, 'Text');
+
+                },
+
+                'and a null condition property': function(topic) {
+                    assert.isNull(topic.condition);
+                }
             },
 
-            'should return a token': function(topic) {
-                assert.isObject(topic);
-            },
+            'in if-enabled loops': {
+                topic: function() {
+                    var lex = new Lexer('{% for element in items if element == "a" %}do{% endfor %}');
 
-            'and it should be of type for': function(topic) {
-                assert.equal(topic.type, 'For');
-            },
+                    return lex.next();
 
-            'and it should have the element name': function(topic) {
-                assert.equal(topic.element, 'element');
-            },
+                },
 
-            'and it should have the collection name': function(topic) {
-                assert.equal(topic.collection, 'items');
-            },
-
-            'and it should have an array as blocks': function(topic) {
-                assert.isArray(topic.blocks);
-            },
-
-            'and it should have a text element as block': function(topic) {
-                assert.equal(topic.blocks[0].type, 'Text');
+                'should have a condition property': function(topic) {
+                    assert.equal(topic.condition,
+                            'element == "a"'
+                    );
+                }
 
             }
 

@@ -222,10 +222,23 @@ vows.describe('kanji module').addBatch({
                     });
                 },
 
-                'should return Hello man!': function(topic) {
+                'should return Hello abcde!': function(topic) {
                     assert.equal(topic, 'Hello abcde!');
                 }
             },
+
+            'test for with if': {
+                topic: function() {
+                    return kanji.render('Hello {% for element in elements if element == "a" %}{{ element }}{% endfor %}!', {
+                        elements: ['a', 'b', 'c', 'd', 'e']
+                    });
+                },
+
+                'should return Hello man!': function(topic) {
+                    assert.equal(topic, 'Hello a!');
+                }
+
+            }
 
         },
 

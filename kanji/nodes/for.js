@@ -1,10 +1,19 @@
 
 var Node = require('./node');
 
-var For = module.exports = function For(element, collection, block) {
+var For = module.exports = function For(element, collection, block, condition) {
     this.element = element;
     this.collection = collection;
     this.block = block;
+    this.condition = condition;
+};
+
+var executeInContext = function(condition, context) {
+    var ifNodeEvalResult;
+    with (context) {
+        ifNodeEvalResult = eval(condition);
+    }
+    return ifNodeEvalResult;
 };
 
 For.prototype.__proto__ = Node.prototype;
@@ -22,7 +31,9 @@ For.prototype.render = function(context) {
 
         context[this.element] = item;
 
-        renderedBits.push(this.block.render(context));
+        if (!this.condition || executeInContext(this.condition, context)) {
+            renderedBits.push(this.block.render(context));
+        }
 
         delete context[this.element];
     }
